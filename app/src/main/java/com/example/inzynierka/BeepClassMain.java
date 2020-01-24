@@ -17,30 +17,20 @@ public class BeepClassMain {
         int bufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
         audioTrack.setStereoVolume(AudioTrack.getMaxVolume(), AudioTrack.getMaxVolume());
-        numofSamples = 250 * 8000 / 1000; // duration in ms * samplerate/1000
+        numofSamples = 250 * 48000 / 1000; // duration in ms * samplerate/1000
         samples = new short[numofSamples];
-        silenceTab=new short[numofSamples];
+        silenceTab = new short[numofSamples];
 
 
     }
 
     public static void GenerateSoundWave() {
-        // Generate waveform
-        /*
-        for (int sampleNum = 0; sampleNum < numofSamples; sampleNum++) {
-            double angle = (2 * Math.PI) * ((double) sampleNum / (double) 8000);
-            double level = Math.sin(angle) * Short.MAX_VALUE;
-            short sample;
 
-            sample = (short) level;
-            samples[sampleNum] = sample;
-
-        }
-        */
 
         for (int i = 0; i < numofSamples; i++) {
-            samples[i] = 15000;
-            silenceTab[i]=0;
+
+            samples[i] = (short) (Math.sin(i * 1000.0f/*Hz*/ / 48000 * Math.PI * 2) * 15000/*Amp*/);
+            silenceTab[i] = 0;
         }
     }
 
@@ -88,16 +78,30 @@ public class BeepClassMain {
         Log.i("play Dot fun", " play dot fun");
         audioTrack.write(samples, 0, 8000);
 
+    }
+
+    private static void PlayLine() {
+        Log.i("play line fun", " play line fun");
+        audioTrack.write(samples, 0, 8000);
+        audioTrack.write(samples, 0, 8000);
+        audioTrack.write(samples, 0, 8000);
 
     }
-    private static void PlaySilence(){
-    audioTrack.write(silenceTab,0,8000);
+
+    private static void PlaySilence() {
+        Log.i("play sil in char", " silence in char");
+        audioTrack.write(silenceTab, 0, 8000);
     }
     //line linia play
 
 
-    //potem następnie z patternu zrobić pattern kodu morse , oddzielany spacjami. spacja to przerwa miedzy znakami
-    //
+    private static void PlaySilenceBetweenChars() {
+        Log.i("play SilenceBetween", " play silence between chars");
+        audioTrack.write(silenceTab, 0, 8000);
+
+
+    }
+
 
     public static int isStillSameCharacter(String morsePattern, int i) {
 
@@ -109,11 +113,14 @@ public class BeepClassMain {
 
     public static void PlayPattern(String morsePattern) {
 
+// to do - jawny podzial na kropki i kreski
+        // wysluchiwalne zmiany sygnalu w znaku
+        // zmiana czestotliwosci sygnalu suwakiem czy czyms
+        
 
         audioTrack.play();
         for (int i = 0; i < morsePattern.length(); i++) {
             //tutaj zrobic tablice dzwiekow
-
 
 
             if (morsePattern.charAt(i) == '.') {
@@ -121,21 +128,17 @@ public class BeepClassMain {
                 //play znak
                 PlayDot();
                 if (isStillSameCharacter(morsePattern, i) == 1) continue;
-                //play cisza miedzy znakami
-
+                PlaySilence();
 
             }
             if (morsePattern.charAt(i) == '-') {
-
-                //play znak
-
+                PlayLine();
                 if (isStillSameCharacter(morsePattern, i) == 1) continue;
-                //play cisza miedzy znakami
+                PlaySilence();
 
             }
             if (morsePattern.charAt(i) == ' ') {
-
-                //play cisza
+                PlaySilenceBetweenChars();
 
             }
 
