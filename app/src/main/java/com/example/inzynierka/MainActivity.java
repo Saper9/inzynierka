@@ -28,9 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
         Random rand = new Random();
         for (int i = 0; i < lenght; i++) {
-            int n = rand.nextInt(1); //0-1, zmienic potem jak bedzie wiecej liter
+            int n = rand.nextInt(26); //0-1, zmienic potem jak bedzie wiecej liter
             String temp = Cons.ALFABET[n];
             patterngen = patterngen + temp;
+            //TODO change to get other cars
         }
         pattern = patterngen;
         //MakeSoundArray();
@@ -38,56 +39,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    private void PlayGeneratedPattern(){
-    BeepClassMain.SetUpEverything();
-    BeepClassMain.GenerateSoundWave();
-    String morsePat=BeepClassMain.ConvertPatternToMorsePattern(pattern);
-    BeepClassMain.PlayPattern(morsePat);
+    private void PlayGeneratedPattern() {
+        BeepClassMain.SetUpEverything();
+        BeepClassMain.GenerateSoundWave();
+        String morsePat = BeepClassMain.ConvertPatternToMorsePattern(pattern);
+        BeepClassMain.PlayPattern(morsePat);
 
     }
 //o okreslonej czestotliwosci i czasie trwania
     //czestotliwosc i predkosc nadawania
     //mozna dlugoscia kropki regulowac
-
-
-
-    private void TestPlaySound(){
-         final int duration = 3; // seconds
-         final int sampleRate = 8000;
-         final int numSamples = duration * sampleRate;
-          double sample[] = new double[numSamples];
-         final double freqOfTone = 440; // hz
-         byte generatedSnd[] = new byte[2 * numSamples];
-        for (int i = 0; i < numSamples; ++i) {
-            sample[i] = Math.sin(2 * Math.PI * i / (sampleRate/freqOfTone));
-        }
-
-        // convert to 16 bit pcm sound array
-        // assumes the sample buffer is normalised.
-        int idx = 0;
-        for (final double dVal : sample) {
-            // scale to maximum amplitude
-            final short val = (short) ((dVal * 32767));
-            // in 16 bit wav PCM, first byte is the low order byte
-            generatedSnd[idx++] = (byte) (val & 0x00ff);
-            generatedSnd[idx++] = (byte) ((val & 0xff00) >>> 8);
-        }
-            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                    sampleRate, AudioFormat.CHANNEL_OUT_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT, generatedSnd.length,
-                    AudioTrack.MODE_STATIC);
-
-
-
-
-
-            audioTrack.write(generatedSnd, 0, generatedSnd.length);
-            audioTrack.play();
-
-        }
-
-
 
 
     void checkPattern() {

@@ -11,6 +11,7 @@ public class BeepClassMain {
     private static int numofSamples;
     private static short samples[];
     private static short silenceTab[];
+    private static float Hz;
 
 
     public static void SetUpEverything() {
@@ -21,8 +22,12 @@ public class BeepClassMain {
         numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; // duration in ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
+        SetHz(1000.0f);
 
+    }
 
+    public static void SetHz(float Hzz){
+        Hz=Hzz;
     }
 
     public static void GenerateSoundWave() {
@@ -30,7 +35,7 @@ public class BeepClassMain {
 
         for (int i = 0; i < numofSamples; i++) {
 
-            samples[i] = (short) (Math.sin(i * 1000.0f/*Hz*/ / 48000 * Math.PI * 2) * 15000/*Amp*/);
+            samples[i] = (short) (Math.sin(i * Hz/*Hz*/ / SAMPLE_RATE_HZ * Math.PI * 2) * 15000/*Amp*/);
             silenceTab[i] = 0;
         }
     }
