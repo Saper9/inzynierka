@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String GeneratePattern(int lenght) {
         String patterngen = "";
+
         Random rand = new Random();
         for (int i = 0; i < lenght; i++) {
             int n = rand.nextInt(1); //0-1, zmienic potem jak bedzie wiecej liter

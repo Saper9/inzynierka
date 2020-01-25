@@ -7,17 +7,18 @@ import android.util.Log;
 
 public class BeepClassMain {
     private static AudioTrack audioTrack;
-    private static int SAMPLE_RATE_HZ = 48000;
+    private static int SAMPLE_RATE_HZ;
     private static int numofSamples;
     private static short samples[];
     private static short silenceTab[];
 
 
     public static void SetUpEverything() {
+        SAMPLE_RATE_HZ=48000;
         int bufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
         audioTrack.setStereoVolume(AudioTrack.getMaxVolume(), AudioTrack.getMaxVolume());
-        numofSamples = 250 * 48000 / 1000; // duration in ms * samplerate/1000
+        numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; // duration in ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
 
@@ -86,6 +87,7 @@ public class BeepClassMain {
         audioTrack.write(samples, 0, 8000);
         audioTrack.write(samples, 0, 8000);
 
+
     }
 
     private static void PlaySilence() {
@@ -97,6 +99,8 @@ public class BeepClassMain {
 
     private static void PlaySilenceBetweenChars() {
         Log.i("play SilenceBetween", " play silence between chars");
+        audioTrack.write(silenceTab, 0, 8000);
+        audioTrack.write(silenceTab, 0, 8000);
         audioTrack.write(silenceTab, 0, 8000);
 
 
@@ -116,7 +120,7 @@ public class BeepClassMain {
 // to do - jawny podzial na kropki i kreski
         // wysluchiwalne zmiany sygnalu w znaku
         // zmiana czestotliwosci sygnalu suwakiem czy czyms
-        
+
 
         audioTrack.play();
         for (int i = 0; i < morsePattern.length(); i++) {
@@ -127,13 +131,13 @@ public class BeepClassMain {
 
                 //play znak
                 PlayDot();
-                if (isStillSameCharacter(morsePattern, i) == 1) continue;
+                //if (isStillSameCharacter(morsePattern, i) == 1) continue;
                 PlaySilence();
 
             }
             if (morsePattern.charAt(i) == '-') {
                 PlayLine();
-                if (isStillSameCharacter(morsePattern, i) == 1) continue;
+                //if (isStillSameCharacter(morsePattern, i) == 1) continue;
                 PlaySilence();
 
             }
