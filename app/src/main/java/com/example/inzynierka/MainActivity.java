@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Pattern", pattern);
             }
         });
-        //Odtwarzanie patternu
+        //Odtwarzanie patternuu
         Button playpattern = findViewById(R.id.playPattern);
         playpattern.setOnClickListener(new View.OnClickListener() {
             @Override
