@@ -12,6 +12,7 @@ public class BeepClassMain {
     private static short samples[];
     private static short silenceTab[];
     private static float Hz;
+    private static boolean setHzflag=false;
 
 
     public static void SetUpEverything() {
@@ -22,12 +23,15 @@ public class BeepClassMain {
         numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; // duration in ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
-        SetHz(1000.0f);
+        if(setHzflag==false){
+            Hz=1000.0f;//domyslna wartosc dla nieustawionego Hz
+        }
 
     }
 
     public static void SetHz(float Hzz){
         Hz=Hzz;
+        setHzflag=true;
     }
 
     public static void GenerateSoundWave() {
@@ -81,13 +85,13 @@ public class BeepClassMain {
 
     //dot kropka play
     private static void PlayDot() {
-        Log.i("play Dot fun", " play dot fun");
+
         audioTrack.write(samples, 0, 8000);
 
     }
 
     private static void PlayLine() {
-        Log.i("play line fun", " play line fun");
+
         audioTrack.write(samples, 0, 8000);
         audioTrack.write(samples, 0, 8000);
         audioTrack.write(samples, 0, 8000);
@@ -96,14 +100,14 @@ public class BeepClassMain {
     }
 
     private static void PlaySilence() {
-        Log.i("play sil in char", " silence in char");
+
         audioTrack.write(silenceTab, 0, 8000);
     }
-    //line linia play
+
 
 
     private static void PlaySilenceBetweenChars() {
-        Log.i("play SilenceBetween", " play silence between chars");
+
         audioTrack.write(silenceTab, 0, 8000);
         audioTrack.write(silenceTab, 0, 8000);
         audioTrack.write(silenceTab, 0, 8000);
@@ -122,14 +126,12 @@ public class BeepClassMain {
 
     public static void PlayPattern(String morsePattern) {
 
-// to do - jawny podzial na kropki i kreski
-        // wysluchiwalne zmiany sygnalu w znaku
-        // zmiana czestotliwosci sygnalu suwakiem czy czyms
+
 
 
         audioTrack.play();
         for (int i = 0; i < morsePattern.length(); i++) {
-            //tutaj zrobic tablice dzwiekow
+
 
 
             if (morsePattern.charAt(i) == '.') {

@@ -1,17 +1,22 @@
 package com.example.inzynierka;
 
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Random;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer[] mp = new MediaPlayer[patternLenght * 2];
     int userInputCorrectNumber;
 
+    Toolbar toolbar;
+
 
     private String GeneratePattern(int lenght) {
         String patterngen = "";
@@ -31,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             int n = rand.nextInt(26); //0-1, zmienic potem jak bedzie wiecej liter
             String temp = Cons.ALFABET[n];
             patterngen = patterngen + temp;
-            //TODO change to get other cars
+            //TODO change to get other chars
         }
         pattern = patterngen;
         //MakeSoundArray();
@@ -89,8 +96,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("MorseCode Trainer");
 
-
+        //TODO zamienic te 3 guziki na 2, jeden od generowania i grania paternu, drugi od checku
+        //TODO zrobic tablicę/obrazek z kodem morse'a jako ściągawka
         //Generowanie patternu do nauki
         Button start = findViewById(R.id.make_pattern);
         start.setOnClickListener(new View.OnClickListener() {
@@ -121,5 +132,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.settingsscreen:
+                startActivity(new Intent(MainActivity.this,Settings.class));
+                break;
+
+        }
+
+        return true;
+    }
 
 }
