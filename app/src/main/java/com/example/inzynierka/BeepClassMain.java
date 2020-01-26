@@ -20,7 +20,7 @@ public class BeepClassMain {
         int bufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
         audioTrack.setStereoVolume(AudioTrack.getMaxVolume(), AudioTrack.getMaxVolume());
-        numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; // duration in ms * samplerate/1000
+        numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; //  ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
         if(setHzflag==false){
@@ -155,6 +155,8 @@ public class BeepClassMain {
 
 
         }
+
+        MainActivity.isThreadWorking=false;
     }
 
 }

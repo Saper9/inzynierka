@@ -24,10 +24,17 @@ public class MainActivity extends AppCompatActivity {
     final int patternLenght = 10;
     String pattern;
     int[] soundArray = new int[patternLenght * 2];
-    MediaPlayer[] mp = new MediaPlayer[patternLenght * 2];
-    int userInputCorrectNumber;
 
-    Toolbar toolbar;
+    int userInputCorrectNumber;
+    static int level=26;
+    static boolean isThreadWorking=false;
+
+    public static void setLvl(int lvl){
+        Log.i("lvl","ustawiam lvl na: "+lvl);
+        level=lvl;
+    }
+
+
 
 
     private String GeneratePattern(int lenght) {
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         Random rand = new Random();
         for (int i = 0; i < lenght; i++) {
-            int n = rand.nextInt(26); //0-1, zmienic potem jak bedzie wiecej liter
+            int n = rand.nextInt(level);
             String temp = Cons.ALFABET[n];
             patterngen = patterngen + temp;
             //TODO change to get other chars
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("MorseCode Trainer");
 
+
         //TODO zamienic te 3 guziki na 2, jeden od generowania i grania paternu, drugi od checku
         //TODO zrobic tablicę/obrazek z kodem morse'a jako ściągawka
         //Generowanie patternu do nauki
@@ -116,8 +124,18 @@ public class MainActivity extends AppCompatActivity {
         playpattern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //PlayFile();
-                PlayGeneratedPattern();
+
+                if(!isThreadWorking){
+                    isThreadWorking=true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            PlayGeneratedPattern();
+                        }
+                    }).start();
+                }
+
+
             }
         });
 
