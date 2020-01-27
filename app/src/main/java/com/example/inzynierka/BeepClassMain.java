@@ -12,26 +12,34 @@ public class BeepClassMain {
     private static short samples[];
     private static short silenceTab[];
     private static float Hz;
-    private static boolean setHzflag=false;
+    private static boolean setHzflag = false;
+    private static int time=250; //ms
+    private static short samplesLine[];
 
 
     public static void SetUpEverything() {
-        SAMPLE_RATE_HZ=48000;
+        SAMPLE_RATE_HZ = 48000;
         int bufferSize = AudioTrack.getMinBufferSize(SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE_HZ, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
         audioTrack.setStereoVolume(AudioTrack.getMaxVolume(), AudioTrack.getMaxVolume());
-        numofSamples = 250 * SAMPLE_RATE_HZ  / 1000; //  ms * samplerate/1000
+        numofSamples = time * SAMPLE_RATE_HZ / 1000; //  ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
-        if(setHzflag==false){
-            Hz=1000.0f;//domyslna wartosc dla nieustawionego Hz
+        samplesLine=new short[3*time*SAMPLE_RATE_HZ/1000];
+        Log.i("kurwa",3*time*SAMPLE_RATE_HZ/1000+"");
+        if (setHzflag == false) {
+            Hz = 1000.0f;//domyslna wartosc dla nieustawionego Hz
         }
 
     }
 
-    public static void SetHz(float Hzz){
-        Hz=Hzz;
-        setHzflag=true;
+    public static void SetTimeOfDot(int x){
+        time=x;
+    }
+
+    public static void SetHz(float Hzz) {
+        Hz = Hzz;
+        setHzflag = true;
     }
 
     public static void GenerateSoundWave() {
@@ -42,6 +50,16 @@ public class BeepClassMain {
             samples[i] = (short) (Math.sin(i * Hz/*Hz*/ / SAMPLE_RATE_HZ * Math.PI * 2) * 15000/*Amp*/);
             silenceTab[i] = 0;
         }
+    }
+
+    public static void GenerateSoundWaveLine()
+    {
+        for (int i = 0; i < (3*time*SAMPLE_RATE_HZ/1000); i++) {
+
+            samplesLine[i] = (short) (Math.sin(i * Hz/*Hz*/ / SAMPLE_RATE_HZ * Math.PI * 2) * 15000/*Amp*/);
+
+        }
+
     }
 
 
@@ -91,26 +109,28 @@ public class BeepClassMain {
     }
 
     private static void PlayLine() {
+        // TODO wymyslic jak zrobic, by byla jedna funkcja nie 3 razy ta wywolywana
 
-        audioTrack.write(samples, 0, 8000);
-        audioTrack.write(samples, 0, 8000);
-        audioTrack.write(samples, 0, 8000);
+        //TODO cos z szybkoscia kropki zrobic
+        //audioTrack.write(samples, 0, 8000);
+       // audioTrack.write(samples, 0, 8000);
+        //audioTrack.write(samples, 0, 8000);
+        audioTrack.write(samplesLine,0,numofSamples*3);
 
 
     }
 
     private static void PlaySilence() {
 
-        audioTrack.write(silenceTab, 0, 8000);
+        audioTrack.write(silenceTab, 0, numofSamples);
     }
-
 
 
     private static void PlaySilenceBetweenChars() {
 
-        audioTrack.write(silenceTab, 0, 8000);
-        audioTrack.write(silenceTab, 0, 8000);
-        audioTrack.write(silenceTab, 0, 8000);
+        audioTrack.write(silenceTab, 0, numofSamples);
+        audioTrack.write(silenceTab, 0, numofSamples);
+        audioTrack.write(silenceTab, 0, numofSamples);
 
 
     }
@@ -127,11 +147,8 @@ public class BeepClassMain {
     public static void PlayPattern(String morsePattern) {
 
 
-
-
         audioTrack.play();
         for (int i = 0; i < morsePattern.length(); i++) {
-
 
 
             if (morsePattern.charAt(i) == '.') {
@@ -156,7 +173,7 @@ public class BeepClassMain {
 
         }
 
-        MainActivity.isThreadWorking=false;
+        MainActivity.isThreadWorking = false;
     }
 
 }

@@ -21,20 +21,22 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     Consts Cons = new Consts();
-    final int patternLenght = 10;
+    static int patternLength = 10;
     String pattern;
-    int[] soundArray = new int[patternLenght * 2];
+
 
     int userInputCorrectNumber;
-    static int level=26;
-    static boolean isThreadWorking=false;
+    static int level = 26;
+    static boolean isThreadWorking = false;
 
-    public static void setLvl(int lvl){
-        Log.i("lvl","ustawiam lvl na: "+lvl);
-        level=lvl;
+    public static void setLvl(int lvl) {
+        Log.i("lvl", "ustawiam lvl na: " + lvl);
+        level = lvl;
     }
 
-
+    public static void setLenghtPattern(int lngth) {
+        patternLength = lngth;
+    }
 
 
     private String GeneratePattern(int lenght) {
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private void PlayGeneratedPattern() {
         BeepClassMain.SetUpEverything();
         BeepClassMain.GenerateSoundWave();
+        BeepClassMain.GenerateSoundWaveLine();
         String morsePat = BeepClassMain.ConvertPatternToMorsePattern(pattern);
         BeepClassMain.PlayPattern(morsePat);
 
@@ -72,15 +75,15 @@ public class MainActivity extends AppCompatActivity {
         String patternTemp = userPatternField.getText().toString();
         patternTemp = patternTemp.toUpperCase();
 
-        if (patternTemp.length() != patternLenght) {
-            for (int i = patternTemp.length(); i < patternLenght; i++) patternTemp += "`";
+        if (patternTemp.length() != patternLength) {
+            for (int i = patternTemp.length(); i < patternLength; i++) patternTemp += "`";
         }
-        for (int i = 0; i < patternLenght; i++) {
+        for (int i = 0; i < patternLength; i++) {
             if (pattern.charAt(i) == patternTemp.charAt(i)) userInputCorrectNumber += 1;
         }
-        Log.i("checkPattern", "ilosc liczb: " + patternLenght + " ilosc popprawnych liczby usera: " + userInputCorrectNumber);
+        Log.i("checkPattern", "ilosc liczb: " + patternLength + " ilosc popprawnych liczby usera: " + userInputCorrectNumber);
 
-        float prcnt = (float) (userInputCorrectNumber * 100) / patternLenght;
+        float prcnt = (float) (userInputCorrectNumber * 100) / patternLength;
         Log.i("checkPattern", "procent: " + prcnt + "%");
         String tmpTODialog;
         if (prcnt >= 90.0) {
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             tmpTODialog = "Nie opanowałeś tego poziomu. Musisz jeszcze poćwiczyć";
         }
 
-        if (patternTemp.length() > patternLenght) {
+        if (patternTemp.length() > patternLength) {
             tmpTODialog = "Podano zbyt dużą liczbę znaków";
         }
         PatternCheckDialog dialog = PatternCheckDialog.newInstance(tmpTODialog);
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pattern = GeneratePattern(patternLenght);
+                pattern = GeneratePattern(patternLength);
                 Log.i("Pattern", pattern);
             }
         });
@@ -125,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!isThreadWorking){
-                    isThreadWorking=true;
+                if (!isThreadWorking) {
+                    isThreadWorking = true;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.settingsscreen:
-                startActivity(new Intent(MainActivity.this,Settings.class));
+                startActivity(new Intent(MainActivity.this, Settings.class));
                 break;
 
         }
