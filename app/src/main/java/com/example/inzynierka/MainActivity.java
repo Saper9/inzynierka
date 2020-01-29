@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     int userInputCorrectNumber;
-    static int level = 26;
+    static int level = 39;
     static boolean isThreadWorking = false;
 
     public static void setLvl(int lvl) {
-        Log.i("lvl", "ustawiam lvl na: " + lvl);
+
         level = lvl;
     }
 
@@ -43,13 +43,15 @@ public class MainActivity extends AppCompatActivity {
         String patterngen = "";
 
         Random rand = new Random();
+
         for (int i = 0; i < lenght; i++) {
             int n = rand.nextInt(level);
-            String temp = Cons.ALFABET[n];
+            char temp = Cons.ALFABETFINAL.charAt(n);
             patterngen = patterngen + temp;
             //TODO change to get other chars
         }
         pattern = patterngen;
+        Log.i("dupsko", pattern + "");
         //MakeSoundArray();
         return patterngen;
     }
@@ -63,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
         BeepClassMain.PlayPattern(morsePat);
 
     }
-//o okreslonej czestotliwosci i czasie trwania
-    //czestotliwosc i predkosc nadawania
-    //mozna dlugoscia kropki regulowac
 
 
     void checkPattern() {
@@ -111,17 +110,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("MorseCode Trainer");
 
 
-        //TODO zamienic te 3 guziki na 2, jeden od generowania i grania paternu, drugi od checku
-        //TODO zrobic tablicę/obrazek z kodem morse'a jako ściągawka
-        //Generowanie patternu do nauki
-        Button start = findViewById(R.id.make_pattern);
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pattern = GeneratePattern(patternLength);
-                Log.i("Pattern", pattern);
-            }
-        });
         //Odtwarzanie patternuu
         Button playpattern = findViewById(R.id.playPattern);
         playpattern.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (!isThreadWorking) {
+                    pattern = GeneratePattern(patternLength);
                     isThreadWorking = true;
                     new Thread(new Runnable() {
                         @Override
@@ -136,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                             PlayGeneratedPattern();
                         }
                     }).start();
-                }
+                } else isThreadWorking = false;
 
 
             }
@@ -165,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.settingsscreen:
                 startActivity(new Intent(MainActivity.this, Settings.class));
+                break;
+
+            case R.id.gettingsheet:
+                startActivity(new Intent(MainActivity.this, MorseSheet.class));
                 break;
 
         }

@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+    <item android:id="@+id/gettingsheet"
+        android:title="SheetScreen"
+        android:icon="@drawable/ic_sheetmorse"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/settingsscreen"
         android:title="SettingsScreen"
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom"/>
+
 
 </menu>

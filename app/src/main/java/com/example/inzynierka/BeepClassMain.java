@@ -13,7 +13,7 @@ public class BeepClassMain {
     private static short silenceTab[];
     private static float Hz;
     private static boolean setHzflag = false;
-    private static int time=250; //ms
+    private static int time = 250; //ms
     private static short samplesLine[];
 
 
@@ -25,16 +25,16 @@ public class BeepClassMain {
         numofSamples = time * SAMPLE_RATE_HZ / 1000; //  ms * samplerate/1000
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
-        samplesLine=new short[3*time*SAMPLE_RATE_HZ/1000];
-        Log.i("kurwa",3*time*SAMPLE_RATE_HZ/1000+"");
+        samplesLine = new short[3 * time * SAMPLE_RATE_HZ / 1000];
+        Log.i("kurwa", 3 * time * SAMPLE_RATE_HZ / 1000 + "");
         if (setHzflag == false) {
             Hz = 1000.0f;//domyslna wartosc dla nieustawionego Hz
         }
 
     }
 
-    public static void SetTimeOfDot(int x){
-        time=x;
+    public static void SetTimeOfDot(int x) {
+        time = x;
     }
 
     public static void SetHz(float Hzz) {
@@ -52,9 +52,8 @@ public class BeepClassMain {
         }
     }
 
-    public static void GenerateSoundWaveLine()
-    {
-        for (int i = 0; i < (3*time*SAMPLE_RATE_HZ/1000); i++) {
+    public static void GenerateSoundWaveLine() {
+        for (int i = 0; i < (3 * time * SAMPLE_RATE_HZ / 1000); i++) {
 
             samplesLine[i] = (short) (Math.sin(i * Hz/*Hz*/ / SAMPLE_RATE_HZ * Math.PI * 2) * 15000/*Amp*/);
 
@@ -95,6 +94,23 @@ public class BeepClassMain {
             if (pattern.charAt(i) == 'Y') morsePattern += "-.-- ";
             if (pattern.charAt(i) == 'Z') morsePattern += "--.. ";
 
+            if (pattern.charAt(i) == '.') morsePattern += ".-.-.- ";
+            if (pattern.charAt(i) == ',') morsePattern += "--..-- ";
+            if (pattern.charAt(i) == '/') morsePattern += "-..-. ";
+            if (pattern.charAt(i) == '?') morsePattern += "..--.. ";
+
+            if (pattern.charAt(i) == '0') morsePattern += "----- ";
+            if (pattern.charAt(i) == '1') morsePattern += ".---- ";
+            if (pattern.charAt(i) == '2') morsePattern += "..--- ";
+            if (pattern.charAt(i) == '3') morsePattern += "...-- ";
+            if (pattern.charAt(i) == '4') morsePattern += "....- ";
+            if (pattern.charAt(i) == '5') morsePattern += "..... ";
+            if (pattern.charAt(i) == '6') morsePattern += "-.... ";
+            if (pattern.charAt(i) == '7') morsePattern += "--... ";
+            if (pattern.charAt(i) == '8') morsePattern += "---.. ";
+            if (pattern.charAt(i) == '9') morsePattern += "----. ";
+
+
         }
         Log.i("patterntomorsebeep", morsePattern);
         return morsePattern;
@@ -109,13 +125,11 @@ public class BeepClassMain {
     }
 
     private static void PlayLine() {
-        // TODO wymyslic jak zrobic, by byla jedna funkcja nie 3 razy ta wywolywana
 
-        //TODO cos z szybkoscia kropki zrobic
         //audioTrack.write(samples, 0, 8000);
-       // audioTrack.write(samples, 0, 8000);
+        // audioTrack.write(samples, 0, 8000);
         //audioTrack.write(samples, 0, 8000);
-        audioTrack.write(samplesLine,0,numofSamples*3);
+        audioTrack.write(samplesLine, 0, numofSamples * 3);
 
 
     }
@@ -149,6 +163,7 @@ public class BeepClassMain {
 
         audioTrack.play();
         for (int i = 0; i < morsePattern.length(); i++) {
+            if (MainActivity.isThreadWorking == false) break;
 
 
             if (morsePattern.charAt(i) == '.') {
