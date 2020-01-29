@@ -17,14 +17,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     public void saveSettings() {
 
         //word length
-        //TODO by nei bylo ujemnych w dlugosci slowa
+        //TODO by nie bylo ujemnych w dlugosci slowa
         EditText lengthField = findViewById(R.id.lenghtofword);
         String lengthStrin = lengthField.getText().toString();
         if (!lengthStrin.isEmpty()) {
             int tmpLength = Integer.parseInt((lengthStrin));
             MainActivity.setLenghtPattern(tmpLength);
         }
-        //dot length kurwa naucz sie pisac LENGTH debilu
+        //dot length naucz sie pisac LENGTH
         EditText dotField=findViewById(R.id.dotlength);
         String lengthDot=dotField.getText().toString();
         if(!lengthDot.isEmpty()){
