@@ -17,7 +17,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     public void saveSettings() {
 
         //word length
-        //TODO by nie bylo ujemnych w dlugosci slowa
+
         EditText lengthField = findViewById(R.id.lenghtofword);
         String lengthStrin = lengthField.getText().toString();
         if (!lengthStrin.isEmpty()) {
