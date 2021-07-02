@@ -48,11 +48,9 @@ public class MainActivity extends AppCompatActivity {
             int n = rand.nextInt(level);
             char temp = Cons.ALFABETFINAL.charAt(n);
             patterngen = patterngen + temp;
-            //TODO change to get other chars
+
         }
         pattern = patterngen;
-        Log.i("dupsko", pattern + "");
-        //MakeSoundArray();
         return patterngen;
     }
 
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < patternLength; i++) {
             if (pattern.charAt(i) == patternTemp.charAt(i)) userInputCorrectNumber += 1;
         }
-        Log.i("checkPattern", "ilosc liczb: " + patternLength + " ilosc popprawnych liczby usera: " + userInputCorrectNumber);
+        Log.i("checkPattern", "ilosc liczb: " + patternLength + " ilosc poprawnych liczby usera: " + userInputCorrectNumber);
 
         float prcnt = (float) (userInputCorrectNumber * 100) / patternLength;
         Log.i("checkPattern", "procent: " + prcnt + "%");
