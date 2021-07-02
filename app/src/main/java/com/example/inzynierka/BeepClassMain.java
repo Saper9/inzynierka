@@ -26,7 +26,6 @@ public class BeepClassMain {
         samples = new short[numofSamples];
         silenceTab = new short[numofSamples];
         samplesLine = new short[3 * time * SAMPLE_RATE_HZ / 1000];
-        Log.i("kurwa", 3 * time * SAMPLE_RATE_HZ / 1000 + "");
         if (setHzflag == false) {
             Hz = 1000.0f;//domyslna wartosc dla nieustawionego Hz
         }
